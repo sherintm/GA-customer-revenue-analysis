@@ -28,6 +28,7 @@ day_collection = database.get_collection("day_totals")
 month_collection = database.get_collection("month_totals")
 year_collection = database.get_collection("year_totals")
 visit_hour_collection = database.get_collection("visit_hour_totals")
+date_collection = database.get_collection("date_totals")
 
 
 # lga_file_path = os.path.join("Data", "VIC_LGA_shp2.json")
@@ -239,6 +240,22 @@ def year_totals():
     print(year_json_data)
 
     return year_json_data
+
+# Route for totals based on each date
+@app.route("/date")
+@cross_origin()
+def date_totals():
+
+    """Fetch the date totals data"""
+    date_records = date_collection.find(
+        {}, {'_id':0})
+
+    date_list = list(date_records)
+    # Converting to the JSON
+    date_json_data = dumps(date_list, indent = 2) 
+    print(date_json_data)
+
+    return date_json_data
 
 if __name__ == '__main__':
     app.run(debug=True)
