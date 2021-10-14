@@ -1,3 +1,126 @@
+function createCountryChart(countryData)
+{
+    var data = [{
+        type: 'choropleth',
+        locationmode: 'country names',
+        locations: countryData.map((data) => data.country),
+        z: countryData.map((data) => data.no_of_users),
+        text: countryData.map((data) => data.country),
+        autocolorscale: true
+    }];
+
+    var layout = {
+      title: 'Total visits',
+      geo: {
+          projection: {
+              type: 'robinson'
+          }
+      }
+    };
+
+    var data2 = [{
+      type: 'choropleth',
+      locationmode: 'country names',
+      locations: countryData.map((data) => data.country),
+      z: countryData.map((data) => data.total_revenue),
+      text: countryData.map((data) => data.country),
+      autocolorscale: true
+  }];
+
+  var layout2 = {
+    title: 'Total Revenue',
+    geo: {
+        projection: {
+            type: 'robinson'
+        }
+    }
+  };
+
+    Plotly.newPlot("map", data, layout, {showLink: false});
+    Plotly.newPlot("map2", data2, layout2, {showLink: false});
+}
+
+function createCountryChart_old(countryData)
+{
+  var myMap = L.map("map", {
+    center: [34.0522, -118.2437],
+    zoom: 8
+  });
+  
+  // Adding tile layer
+  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+    tileSize: 512,
+    maxZoom: 18,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: API_KEY
+  }).addTo(myMap);
+  
+  // // Load in geojson data
+  var geoData = "../data/countries.geojson";
+  
+  var geojson;
+  // Grab data with d3
+  d3.json(geoData).then(function(data) {
+  // Create a new choropleth layer
+  geojson = L.choropleth(data, {
+
+    // Define what  property in the features to use
+    //valueProperty: "",
+
+    // Set color scale
+    scale: ["#ffffb2", "#b10026"],
+
+    // Number of breaks in step range
+    steps: 10,
+
+    // q for quartile, e for equidistant, k for k-means
+    mode: "q",
+    style: {
+      // Border color
+      color: "#fff",
+      weight: 1,
+      fillOpacity: 0.8
+    },
+
+    // Binding a pop-up to each layer
+    onEachFeature: function(feature, layer) {
+      // layer.bindPopup("Zip Code: " + feature.properties.ZIP + "<br>Median Household Income:<br>" +
+      //   "$" + feature.properties.MHI2016);
+    }
+  }).addTo(myMap);
+
+  // Set up the legend
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+    var limits = geojson.options.limits;
+    var colors = geojson.options.colors;
+    var labels = [];
+
+    // Add min & max
+    var legendInfo = "<h1>Median Income</h1>" +
+      "<div class=\"labels\">" +
+        "<div class=\"min\">" + limits[0] + "</div>" +
+        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+      "</div>";
+
+    div.innerHTML = legendInfo;
+
+    limits.forEach(function(limit, index) {
+      labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+    });
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+  };
+
+  // Adding legend to the map
+  legend.addTo(myMap);
+
+  });
+}
 
 function createDeviceChart(deviceData) {
 
@@ -11,8 +134,6 @@ function createDeviceChart(deviceData) {
       opacity: 0.7,
     },
   };
-  console.log(deviceData)
-  console.log(trace1)
   const trace2 = {
     x: deviceData.map((data) => data.device_category),
     y: deviceData.map((data) => data.mean_revenue),
@@ -127,7 +248,6 @@ function createDateChart(dateData) {
   for (var i = 1; i <= Object.keys(dateData).length; i++) {
     foo.push(i);
   }
-  console.log(Object.keys(dateData).length)
   const trace1 = {
     // x: dateData.map((day) => parseInt(day.date)),
     x: foo,
@@ -153,7 +273,6 @@ function createDateChart(dateData) {
   };
 
   const data1 = [trace1];
-  console.log(trace1)
   const layout1 = {
     title: 'Visits per day',
     xaxis: {
@@ -175,6 +294,120 @@ function createDateChart(dateData) {
   Plotly.newPlot('incidents_by_year', data2, layout2, { responsive: true });
 }
 
+function createContinentChart(continentData)
+{
+  const trace1 = {
+    x: continentData.map((data) => data.continent),
+    y: continentData.map((data) => data.no_of_users),
+    type: 'bar',
+    name: 'Total Visits',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+  const trace2 = {
+    x: continentData.map((data) => data.continent),
+    y: continentData.map((data) => data.mean_revenue),
+    type: 'bar',
+    name: 'Mean Revenue',
+    xaxis: 'x2',
+    yaxis: 'y2',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+  const trace3 = {
+    x: continentData.map((data) => data.continent),
+    y: continentData.map((data) => data.total_revenue),
+    type: 'bar',
+    name: 'Mean Revenue',
+    xaxis: 'x3',
+    yaxis: 'y3',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+  
+  const data = [trace1, trace2, trace3];
+  
+  const layout = {
+  grid: {
+      rows: 3,
+      columns: 1,
+      pattern: 'independent',
+      roworder: 'bottom to top'}
+  };
+  
+  Plotly.newPlot('continents', data, layout, { responsive: true });
+}
+
+function createSubcontinentChart(subcontinentData)
+{
+  const highVisitsData = subcontinentData
+  .sort((a, b) => a.no_of_users - b.no_of_users);
+  // .slice(0, 10);
+
+  const trace1 = {
+    y: highVisitsData.map((data) => data.subcontinent),
+    x: highVisitsData.map((data) => data.no_of_users),
+    type: 'bar',
+    name: 'Total Visits',
+    orientation: 'h',
+    text: highVisitsData.map((data) => data.no_of_users),
+    textposition: 'auto',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+  const trace2 = {
+    x: subcontinentData.map((data) => data.subcontinent),
+    y: subcontinentData.map((data) => data.mean_revenue),
+    type: 'bar',
+    name: 'Mean Revenue',
+    xaxis: 'x2',
+    yaxis: 'y2'
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+  const trace3 = {
+    x: subcontinentData.map((data) => data.subcontinent),
+    y: subcontinentData.map((data) => data.total_revenue),
+    type: 'bar',
+    name: 'Mean Revenue',
+    xaxis: 'x3',
+    yaxis: 'y3',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+  console.log(trace1)
+  console.log(trace2)
+  console.log(trace3)
+  
+  const data = [trace1, trace2, trace3];
+  
+  const layout = {
+  grid: {
+      rows: 1,
+      columns: 3,
+      pattern: 'independent',
+      roworder: 'bottom to top'}
+  };
+  
+  Plotly.newPlot('subcontinents', data, layout, { responsive: true });
+}
 
 const renderCharts = async () => {
   
@@ -182,10 +415,10 @@ const renderCharts = async () => {
   const OSData = await d3.json(OS_CATEGORY_API);
   const browserData = await d3.json(BROWSER_CATEGORY_API);
   const dateData = await d3.json(DATE_API);
+  const countryData = await d3.json(COUNTRY_API);
+  const continentData = await d3.json(CONTINENT_API);
+  const subcontinentData = await d3.json(SUBCONTINENT_API);
 
-  // const continentData = await d3.json(CONTINENT_API);
-  // const subcontinentData = await d3.json(SUBCONTINENT_API);
-  // const countryData = await d3.json(COUNTRY_API);
   // const channelData = await d3.json(CHANNEL_GROUP_API);
   // const mediumData = await d3.json(MEDIUM_CATEGORY_API);
   // const weekdayData = await d3.json(WEEKDAY_API);
@@ -197,10 +430,9 @@ const renderCharts = async () => {
   createOSChart(OSData);
   createBrowserChart(browserData);
   createDateChart(dateData);
-
-  // createContinetChart(continentData)
-  // createSubcontinetChart(subcontinentData)
-  // createCountryChart(countryData)
+  //createCountryChart(countryData);
+  createContinentChart(continentData);
+  createSubcontinentChart(subcontinentData);
   // createChannelChart(channelData);
   // createMediumChart(mediumData);
   // createWeekdayChart(weekdayData);
