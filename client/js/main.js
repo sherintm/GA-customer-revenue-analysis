@@ -2,19 +2,24 @@ const createTrafficChart =  async (traffic) =>
 {
   console.log(traffic)
   let trafficData;
+  let traffic_title;
   if (traffic==="source")
   {
     trafficData = await d3.json(TRAFFIC_SOURCE_API);
+    traffic_title = 'Revenue Distribution based on Traffic Source'
   }else if (traffic==="medium")
   {
     trafficData = await d3.json(TRAFFIC_MEDIUM_API);
+    traffic_title = 'Revenue Distribution based on Traffic Source Medium'
+
   }else
   {
     trafficData = await d3.json(TRAFFIC_CAMPAIGN_API);
+    traffic_title = 'Revenue Distribution based on Traffic Source Campaign'
   }
 
-  trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue);
-  // .slice(0, 10);
+  trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue)
+  .slice(0, 10);
   const trace1 = {
     x: trafficData.map((data) => data.traffic_source),
     y: trafficData.map((data) => data.no_of_users),
@@ -48,7 +53,7 @@ const createTrafficChart =  async (traffic) =>
       columns: 1,
       pattern: 'independent',
       roworder: 'bottom to top'},
-  title:'Revenue Distribution based on Traffic Source Attributes'
+  title: traffic_title
   };
   
   Plotly.newPlot('incidents_by_year', data, layout, { responsive: true });
@@ -179,90 +184,92 @@ function createCountryChart_old(countryData)
 }
 
 function createDeviceChart(deviceData) {
-
   const trace1 = {
-    x: deviceData.map((data) => data.device_category),
-    y: deviceData.map((data) => data.no_of_users),
-    type: 'bar',
-    name: 'Total Users',
-    marker: {
-      color: 'rgb(49,130,189)',
-      opacity: 0.7,
-    },
+    labels: deviceData.map((data) => data.device_category),
+    values: deviceData.map((data) => data.total_revenue),
+    type: 'pie',
+    hole: .5,
+    title: 'Total Revenue',
+    domain: {row: 0},
+    // marker: {
+    //   color: 'rgb(112,204,204)',
+    //   opacity: 0.7,
+    // },
   };
+
+
   const trace2 = {
-    x: deviceData.map((data) => data.device_category),
-    y: deviceData.map((data) => data.mean_revenue),
-    type: 'bar',
-    name: 'Mean Revenue',
-    marker: {
-      color: 'rgb(204,204,204)',
-      opacity: 0.7,
-    },
+    labels: deviceData.map((data) => data.device_category),
+    values: deviceData.map((data) => data.no_of_users),
+    type: 'pie',
+    hole: .5,
+    title: 'Total Visits',
+    domain: {row: 1},
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
   };
 
-  const trace3 = {
-    x: deviceData.map((data) => data.device_category),
-    y: deviceData.map((data) => data.total_revenue),
-    type: 'bar',
-    name: 'Total Revenue',
-    marker: {
-      color: 'rgb(112,204,204)',
-      opacity: 0.7,
-    },
+
+  const data = [trace1, trace2];
+
+  const layout = {
+    title: 'Distribution by Device Category',
+    // xaxis: {
+    //   tickangle: -45,
+    // },
+    // annotations: [
+    //   {
+    //     // font: {
+    //     //   size: 20
+    //     // },
+    //     // showarrow: false,
+    //     text: 'GHG',
+    //     // x: 0.17,
+    //     // y: 0.5
+    //   },
+    //   {
+    //     // font: {
+    //     //   size: 20
+    //     // },
+    //     // showarrow: false,
+    //     text: 'CO2',
+    //     // x: 0.82,
+    //     // y: 0.5
+    //   }
+    // ],
+    grid: {rows: 2, columns: 1}
   };
 
-  const userData = [trace1];
-  const meanRevData = [trace2];
-  const totalRevData = [trace3];
-  // const data = [trace1, trace2, trace3];
-
-  const layout1 = {
-    title: 'Users by Device Category',
-    xaxis: {
-      tickangle: -45,
-    },
-  };
-
-  const layout2 = {
-    title: 'Mean Revenue by Device Category',
-    xaxis: {
-      tickangle: -45,
-    },
-  };
-
-  const layout3 = {
-    title: 'Total Revenue by Device Category',
-    xaxis: {
-      tickangle: -45,
-    },
-  };
-
-  Plotly.newPlot('device_users', userData, layout1, { responsive: true });
-  Plotly.newPlot('device_mean_rev', meanRevData, layout2, { responsive: true });
-  Plotly.newPlot('device_total_rev', totalRevData, layout3, { responsive: true });
+  Plotly.newPlot('device_users', data, layout, { responsive: true });
 }
 
 function createOSChart(OSData) {
+  OSData = OSData.sort((a, b) => b.total_revenue - a.total_revenue).slice(0,15);
 
   const trace1 = {
-    x: OSData.map((data) => data.OS),
-    y: OSData.map((data) => data.no_of_users),
+    x: OSData.map((data) => data.total_revenue),
+    y: OSData.map((data) => data.OS),
     type: 'bar',
-    name: 'Total Users',
-    marker: {
-      color: 'rgb(49,130,189)',
-      opacity: 0.7,
-    },
+    name: 'Total Revenue',
+    orientation: 'h',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
   };
 
   const data = [trace1];
   //const data = [trace1, trace2, trace3];
 
   const layout = {
-    title: 'Total users and revenue by OS Category',
-    xaxis: {
-      tickangle: -45,
+    title: 'Total Revenue distribution by OS',
+    // xaxis: {
+    //   tickangle: -45,
+    // },
+    yaxis: {
+      autorange: 'reversed',
     },
     //barmode: 'group',
   };
@@ -271,40 +278,96 @@ function createOSChart(OSData) {
 }
 
 function createBrowserChart(browserData) {
+  browserData = browserData.sort((a, b) => b.total_revenue - a.total_revenue).slice(0,9);
 
   const trace1 = {
-    x: browserData.map((data) => data.browser),
-    y: browserData.map((data) => data.no_of_users),
+    x: browserData.map((data) => data.total_revenue),
+    y: browserData.map((data) => data.browser),
     type: 'bar',
-    name: 'Total Users',
-    marker: {
-      color: 'rgb(49,130,189)',
-      opacity: 0.7,
-    },
+    name: 'Total Revenue',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+    orientation: 'h',
   };
 
   const data = [trace1];
   //const data = [trace1, trace2, trace3];
 
   const layout = {
-    title: 'Total users and revenue by Browser Category',
-    xaxis: {
-      tickangle: -45,
-    },
+    title: 'Total Revenue Distribution by Browser',
+    // xaxis: {
+    //   tickangle: -45,
+    // },
     //barmode: 'group',
   };
 
   Plotly.newPlot('browser', data, layout, { responsive: true });
 }
 
+function createChannelChart(channelData) {
+  var ultimateColors = [
+    ['rgb(56, 75, 126)', 'rgb(18, 36, 37)', 'rgb(34, 53, 101)', 'rgb(36, 55, 57)', 'rgb(6, 4, 4)'],
+    ['rgb(177, 127, 38)', 'rgb(205, 152, 36)', 'rgb(99, 79, 37)', 'rgb(129, 180, 179)', 'rgb(124, 103, 37)'],
+    ['rgb(33, 75, 99)', 'rgb(79, 129, 102)', 'rgb(151, 179, 100)', 'rgb(175, 49, 35)', 'rgb(36, 73, 147)'],
+    ['rgb(146, 123, 21)', 'rgb(177, 180, 34)', 'rgb(206, 206, 40)', 'rgb(175, 51, 21)', 'rgb(35, 36, 21)']
+  ];
+
+  const trace1 = {
+    values: channelData.map((data) => data.no_of_users),
+    labels: channelData.map((data) => data.channel_group),
+    type: 'pie',
+    title: 'Total Visits',
+    marker: {
+  //  colors: ultimateColors[0]
+    },
+    domain: {
+    row: 0,
+    column: 0
+    },
+    hoverinfo: 'label+percent+name',
+  };
+
+  const trace2 = {
+    values: channelData.map((data) => data.total_revenue),
+    labels: channelData.map((data) => data.channel_group),
+    type: 'pie',
+    title: 'Total Revenue',
+    marker: {
+  // colors: ultimateColors[1]
+    },
+    domain: {
+    row: 0,
+    column: 1
+    },
+    hoverinfo: 'label+percent+name',
+  };
+
+  var data = [trace1, trace2];
+
+  var layout = {
+  // height: 100%,
+  // width: 500,
+  grid: {rows: 1, columns: 2},
+  title:'Distribution by Channel Group'
+  };
+
+  Plotly.newPlot('channel_group', data, layout, { responsive: true });
+
+}
+function parseJsonDate(date)
+{
+  console.log(JSON.stringify(date.date));
+  const year = JSON.stringify(date.date).slice(0, 4);
+  const month = JSON.stringify(date.date).slice(4, 6);
+  const day = JSON.stringify(date.date).slice(6, 8);
+  const newdate = new Date(year, month, day)
+  //console.log(newdate);
+  return newdate;
+}
+
 function createDateChart(dateData) {
-
-  var foo = [];
-
-  for (var i = 1; i <= Object.keys(dateData).length; i++) {
-    foo.push(i);
-  }
-
   // const trace1 = {
   //   // x: dateData.map((day) => parseInt(day.date)),
   //   x: foo,
@@ -346,15 +409,7 @@ function createDateChart(dateData) {
   //   },
   //   barmode: 'group',
   // };
-  function parseJsonDate(date)
-  {
-    const year = JSON.stringify(date.date).slice(0, 4);
-    const month = JSON.stringify(date.date).slice(4, 6);
-    const day = JSON.stringify(date.date).slice(6, 8);
-    const newdate = new Date(year, month, day)
-    return newdate;
-  }
-
+  console.log(dateData)
   const trace1 = {
     x: dateData.map(parseJsonDate),
     //x: foo,
@@ -381,7 +436,7 @@ function createDateChart(dateData) {
     xaxis: 'x2',
     yaxis: 'y2',
   };
-
+  console.log(trace1.x)
   // const data1 = [trace1];
   // const layout1 = {
   //   title: 'Visits per day',
@@ -443,7 +498,6 @@ function createDateChart(dateData) {
   //     roworder: 'bottom to top'},
   // };
 
-  
   Plotly.newPlot('victims', data, layout, { responsive: true });
   //Plotly.newPlot('offence_type', data1, layout1, { responsive: true });
   //Plotly.newPlot('incidents_by_year', data2, layout2, { responsive: true });
@@ -573,8 +627,7 @@ const renderCharts = async () => {
   const countryData = await d3.json(COUNTRY_API);
   const continentData = await d3.json(CONTINENT_API);
   const subcontinentData = await d3.json(SUBCONTINENT_API);
-
-  // const channelData = await d3.json(CHANNEL_GROUP_API);
+  const channelData = await d3.json(CHANNEL_GROUP_API);
   // const weekdayData = await d3.json(WEEKDAY_API);
   // const dayData = await d3.json(DAY_API);
   // const monthData = await d3.json(MONTH_API);
@@ -584,18 +637,17 @@ const renderCharts = async () => {
   createOSChart(OSData);
   createBrowserChart(browserData);
   createDateChart(dateData);
-  //createCountryChart(countryData);
+  createCountryChart(countryData);
   createContinentChart(continentData);
   createSubcontinentChart(subcontinentData);
-  // createChannelChart(channelData);
+  createChannelChart(channelData);
   // createMediumChart(mediumData);
   // createWeekdayChart(weekdayData);
   // createMonthChart(monthData);
   // createYearChart(yearData);
-
 }
 
-const onYearChange = async () => {
+const onTrafficChange = async () => {
   const traffic = document.querySelector('#year-select').value;
   showLoader();
   await createTrafficChart(traffic);
@@ -606,6 +658,7 @@ const onYearChange = async () => {
 const init = async () => {
   showLoader();
   await renderCharts();
+  await onTrafficChange();
   hideLoader();
 };
 
