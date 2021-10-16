@@ -313,7 +313,14 @@
         </div>
         <div class="row2">
           <article class="offence-grid">
-            <div id="offence_type"></div>
+            <div class="year-selection">
+              <div class="year-label">Select Traffic Source Attribute :</div>
+              <select id="year-select" onchange="onYearChange()">
+                <option value="source" selected>Source</option>
+                <option value="medium">Medium</option>
+                <option value="campaign">Campaign</option>
+              </select>
+            <!-- <div id="offence_type"></div> -->
           </article>
           <article>
             <div id="incidents_by_year"></div>

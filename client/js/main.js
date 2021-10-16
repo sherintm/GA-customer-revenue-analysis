@@ -1,3 +1,59 @@
+const createTrafficChart =  async (traffic) =>
+{
+  console.log(traffic)
+  let trafficData;
+  if (traffic==="source")
+  {
+    trafficData = await d3.json(TRAFFIC_SOURCE_API);
+  }else if (traffic==="medium")
+  {
+    trafficData = await d3.json(TRAFFIC_MEDIUM_API);
+  }else
+  {
+    trafficData = await d3.json(TRAFFIC_CAMPAIGN_API);
+  }
+
+  trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue);
+  // .slice(0, 10);
+  const trace1 = {
+    x: trafficData.map((data) => data.traffic_source),
+    y: trafficData.map((data) => data.no_of_users),
+    type: 'bar',
+    name: 'Total Visits',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+
+
+  const trace2 = {
+    x: trafficData.map((data) => data.traffic_source),
+    y: trafficData.map((data) => data.total_revenue),
+    type: 'bar',
+    name: 'Total Revenue',
+    xaxis: 'x2',
+    yaxis: 'y2',
+    // marker: {
+    //   color: 'rgb(49,130,189)',
+    //   opacity: 0.7,
+    // },
+  };
+  
+  const data = [trace1, trace2];
+  
+  const layout = {
+  grid: {
+      rows: 2,
+      columns: 1,
+      pattern: 'independent',
+      roworder: 'bottom to top'},
+  title:'Revenue Distribution based on Traffic Source Attributes'
+  };
+  
+  Plotly.newPlot('incidents_by_year', data, layout, { responsive: true });
+
+}
 function createCountryChart(countryData)
 {
     var data = [{
@@ -248,9 +304,60 @@ function createDateChart(dateData) {
   for (var i = 1; i <= Object.keys(dateData).length; i++) {
     foo.push(i);
   }
+
+  // const trace1 = {
+  //   // x: dateData.map((day) => parseInt(day.date)),
+  //   x: foo,
+  //   y: dateData.map((day) => day.no_of_users),
+  //   name: 'Visits',
+  //   mode: 'lines',
+  //   line: {
+  //     shape: 'spline',
+  //     smoothing: 1.3,
+  //   },
+  // };
+
+  // const trace2 = {
+  //   // x: dateData.map((day) => parseInt(day.date)),
+  //   x: foo,
+  //   y: dateData.map((day) => day.total_revenue),
+  //   name: 'Revenue',
+  //   mode: 'lines',
+  //   line: {
+  //     shape: 'spline',
+  //     smoothing: 1.3,
+  //   },
+  // };
+
+  // const data1 = [trace1];
+  // const layout1 = {
+  //   title: 'Visits per day',
+  //   xaxis: {
+  //     tickangle: -45,
+  //   },
+  //   barmode: 'group',
+  // };
+
+  // const data2 = [trace2];
+  // const layout2 = {
+  //   title: 'Revenue per day',
+  //   xaxis: {
+  //     tickangle: -45,
+  //   },
+  //   barmode: 'group',
+  // };
+  function parseJsonDate(date)
+  {
+    const year = JSON.stringify(date.date).slice(0, 4);
+    const month = JSON.stringify(date.date).slice(4, 6);
+    const day = JSON.stringify(date.date).slice(6, 8);
+    const newdate = new Date(year, month, day)
+    return newdate;
+  }
+
   const trace1 = {
-    // x: dateData.map((day) => parseInt(day.date)),
-    x: foo,
+    x: dateData.map(parseJsonDate),
+    //x: foo,
     y: dateData.map((day) => day.no_of_users),
     name: 'Visits',
     mode: 'lines',
@@ -258,11 +365,12 @@ function createDateChart(dateData) {
       shape: 'spline',
       smoothing: 1.3,
     },
+    xaxis: 'x1',
+    yaxis: 'y1',
   };
-
   const trace2 = {
-    // x: dateData.map((day) => parseInt(day.date)),
-    x: foo,
+    x: dateData.map(parseJsonDate),
+    //x: foo,
     y: dateData.map((day) => day.total_revenue),
     name: 'Revenue',
     mode: 'lines',
@@ -270,32 +378,82 @@ function createDateChart(dateData) {
       shape: 'spline',
       smoothing: 1.3,
     },
+    xaxis: 'x2',
+    yaxis: 'y2',
   };
 
-  const data1 = [trace1];
-  const layout1 = {
-    title: 'Visits per day',
-    xaxis: {
-      tickangle: -45,
-    },
-    barmode: 'group',
-  };
+  // const data1 = [trace1];
+  // const layout1 = {
+  //   title: 'Visits per day',
+  //   xaxis: {
+  //     tickangle: -45,
+  //   },
+  //   barmode: 'group',
+  // };
 
-  const data2 = [trace2];
-  const layout2 = {
-    title: 'Revenue per day',
-    xaxis: {
-      tickangle: -45,
-    },
-    barmode: 'group',
+  // const data2 = [trace2];
+  // const layout2 = {
+  //   title: 'Revenue per day',
+  //   xaxis: {
+  //     tickangle: -45,
+  //   },
+  //   barmode: 'group',
+  // };
+   const data = [trace1, trace2];
+  
+  const layout = {
+  grid: {
+      rows: 2,
+      columns: 1,
+      pattern: 'independent',
+      roworder: 'bottom to top'}
   };
+  // var layout = {
+  //   title: 'Time Series with Rangeslider',
+  //   xaxis: {
+  //     autorange: true,
+  //     range: [new Date(Math.min.apply(null,trace1.x)), new Date(Math.max.apply(null,trace1.x))],
+  //     rangeselector: {buttons: [
+  //         {
+  //           count: 1,
+  //           label: '1m',
+  //           step: 'month',
+  //           stepmode: 'backward'
+  //         },
+  //         {
+  //           count: 6,
+  //           label: '6m',
+  //           step: 'month',
+  //           stepmode: 'backward'
+  //         },
+  //         {step: 'all'}
+  //       ]},
+  //     rangeslider: {range: [new Date(Math.min.apply(null,trace1.x)), new Date(Math.max.apply(null,trace1.x))]},
+  //     type: 'date'
+  //   },
+  //   yaxis: {
+  //     autorange: true,
+  //     //range: [86.8700008333, 138.870004167],
+  //     type: 'linear'
+  //   },
+  //   grid: {
+  //     rows: 2,
+  //     columns: 1,
+  //     pattern: 'independent',
+  //     roworder: 'bottom to top'},
+  // };
 
-  Plotly.newPlot('offence_type', data1, layout1, { responsive: true });
-  Plotly.newPlot('incidents_by_year', data2, layout2, { responsive: true });
+  
+  Plotly.newPlot('victims', data, layout, { responsive: true });
+  //Plotly.newPlot('offence_type', data1, layout1, { responsive: true });
+  //Plotly.newPlot('incidents_by_year', data2, layout2, { responsive: true });
 }
 
 function createContinentChart(continentData)
 {
+  continentData = continentData
+  .sort((a, b) => b.no_of_users - a.no_of_users);
+  // .slice(0, 10);
   const trace1 = {
     x: continentData.map((data) => data.continent),
     y: continentData.map((data) => data.no_of_users),
@@ -341,8 +499,8 @@ function createContinentChart(continentData)
       columns: 1,
       pattern: 'independent',
       roworder: 'bottom to top'}
+      
   };
-  
   Plotly.newPlot('continents', data, layout, { responsive: true });
 }
 
@@ -392,9 +550,6 @@ function createSubcontinentChart(subcontinentData)
     // },
   };
 
-  console.log(trace1)
-  console.log(trace2)
-  console.log(trace3)
   
   const data = [trace1, trace2, trace3];
   
@@ -420,7 +575,6 @@ const renderCharts = async () => {
   const subcontinentData = await d3.json(SUBCONTINENT_API);
 
   // const channelData = await d3.json(CHANNEL_GROUP_API);
-  // const mediumData = await d3.json(MEDIUM_CATEGORY_API);
   // const weekdayData = await d3.json(WEEKDAY_API);
   // const dayData = await d3.json(DAY_API);
   // const monthData = await d3.json(MONTH_API);
@@ -440,6 +594,14 @@ const renderCharts = async () => {
   // createYearChart(yearData);
 
 }
+
+const onYearChange = async () => {
+  const traffic = document.querySelector('#year-select').value;
+  showLoader();
+  await createTrafficChart(traffic);
+  hideLoader();
+};
+
 
 const init = async () => {
   showLoader();

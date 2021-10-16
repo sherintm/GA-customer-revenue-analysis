@@ -22,7 +22,9 @@ channel_group_collection = database.get_collection("channel_group_totals")
 browser_category_collection = database.get_collection("browser_category_totals")
 os_category_collection = database.get_collection("os_category_totals")
 device_category_collection = database.get_collection("device_category_totals")
-medium_category_collection = database.get_collection("medium_category_totals")
+traffic_medium_collection = database.get_collection("traffic_medium_totals")
+traffic_source_collection = database.get_collection("traffic_source_totals")
+traffic_campaign_collection = database.get_collection("traffic_campaign_totals")
 weekday_collection = database.get_collection("weekday_totals")
 day_collection = database.get_collection("day_totals")
 month_collection = database.get_collection("month_totals")
@@ -161,20 +163,53 @@ def device_category_totals():
     return device_category_json_data
 
 # Route for totals based on medium category
-@app.route("/medium_category")
+@app.route("/traffic_medium")
 @cross_origin()
-def medium_category_totals():
+def traffic_medium_totals():
 
-    """Fetch the  medium category data"""
-    medium_category_records = medium_category_collection.find(
+    """Fetch the traffic medium data"""
+    traffic_medium_records = traffic_medium_collection.find(
         {}, {'_id':0})
 
-    medium_category_list = list(medium_category_records)
+    traffic_medium_list = list(traffic_medium_records)
     # Converting to the JSON
-    medium_category_json_data = dumps(medium_category_list, indent = 2) 
-    print(medium_category_json_data)
+    traffic_medium_json_data = dumps(traffic_medium_list, indent = 2) 
+    print(traffic_medium_json_data)
 
-    return medium_category_json_data
+    return traffic_medium_json_data
+
+# Route for totals based on medium category
+@app.route("/traffic_source")
+@cross_origin()
+def traffic_source_totals():
+
+    """Fetch the traffic source data"""
+    traffic_source_records = traffic_source_collection.find(
+        {}, {'_id':0})
+
+    traffic_source_list = list(traffic_source_records)
+    # Converting to the JSON
+    traffic_source_json_data = dumps(traffic_source_list, indent = 2) 
+    print(traffic_source_json_data)
+
+    return traffic_source_json_data
+
+# Route for totals based on medium category
+@app.route("/traffic_campaign")
+@cross_origin()
+def traffic_campaign_totals():
+
+    """Fetch the traffic campaign data"""
+    traffic_campaign_records = traffic_campaign_collection.find(
+        {}, {'_id':0})
+
+    traffic_campaign_list = list(traffic_campaign_records)
+    # Converting to the JSON
+    traffic_campaign_json_data = dumps(traffic_campaign_list, indent = 2) 
+    print(traffic_campaign_json_data)
+
+    return traffic_campaign_json_data
+
 
 
 # Route for totals based on weekday
