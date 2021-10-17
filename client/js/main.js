@@ -1,3 +1,4 @@
+
 const createTrafficChart =  async (traffic) =>
 {
   console.log(traffic)
@@ -356,63 +357,22 @@ function createChannelChart(channelData) {
   Plotly.newPlot('channel_group', data, layout, { responsive: true });
 
 }
+
 function parseJsonDate(date)
 {
-  console.log(JSON.stringify(date.date));
-  const year = JSON.stringify(date.date).slice(0, 4);
-  const month = JSON.stringify(date.date).slice(4, 6);
-  const day = JSON.stringify(date.date).slice(6, 8);
-  const newdate = new Date(year, month, day)
-  //console.log(newdate);
+  //console.log(Object.values(date.date));
+  let strdate = Object.values(date.date);
+  const newdate = new Date(strdate[0]);
   return newdate;
 }
 
 function createDateChart(dateData) {
-  // const trace1 = {
-  //   // x: dateData.map((day) => parseInt(day.date)),
-  //   x: foo,
-  //   y: dateData.map((day) => day.no_of_users),
-  //   name: 'Visits',
-  //   mode: 'lines',
-  //   line: {
-  //     shape: 'spline',
-  //     smoothing: 1.3,
-  //   },
-  // };
 
-  // const trace2 = {
-  //   // x: dateData.map((day) => parseInt(day.date)),
-  //   x: foo,
-  //   y: dateData.map((day) => day.total_revenue),
-  //   name: 'Revenue',
-  //   mode: 'lines',
-  //   line: {
-  //     shape: 'spline',
-  //     smoothing: 1.3,
-  //   },
-  // };
-
-  // const data1 = [trace1];
-  // const layout1 = {
-  //   title: 'Visits per day',
-  //   xaxis: {
-  //     tickangle: -45,
-  //   },
-  //   barmode: 'group',
-  // };
-
-  // const data2 = [trace2];
-  // const layout2 = {
-  //   title: 'Revenue per day',
-  //   xaxis: {
-  //     tickangle: -45,
-  //   },
-  //   barmode: 'group',
-  // };
-  console.log(dateData)
+  // console.log(dateData)
+  date_array =  dateData.map(parseJsonDate);
+  //console.log(date_array);
   const trace1 = {
-    x: dateData.map(parseJsonDate),
-    //x: foo,
+    x: date_array,
     y: dateData.map((day) => day.no_of_users),
     name: 'Visits',
     mode: 'lines',
@@ -424,8 +384,7 @@ function createDateChart(dateData) {
     yaxis: 'y1',
   };
   const trace2 = {
-    x: dateData.map(parseJsonDate),
-    //x: foo,
+    x: date_array,
     y: dateData.map((day) => day.total_revenue),
     name: 'Revenue',
     mode: 'lines',
@@ -436,25 +395,8 @@ function createDateChart(dateData) {
     xaxis: 'x2',
     yaxis: 'y2',
   };
-  console.log(trace1.x)
-  // const data1 = [trace1];
-  // const layout1 = {
-  //   title: 'Visits per day',
-  //   xaxis: {
-  //     tickangle: -45,
-  //   },
-  //   barmode: 'group',
-  // };
 
-  // const data2 = [trace2];
-  // const layout2 = {
-  //   title: 'Revenue per day',
-  //   xaxis: {
-  //     tickangle: -45,
-  //   },
-  //   barmode: 'group',
-  // };
-   const data = [trace1, trace2];
+  const data = [trace1, trace2];
   
   const layout = {
   grid: {
@@ -463,44 +405,8 @@ function createDateChart(dateData) {
       pattern: 'independent',
       roworder: 'bottom to top'}
   };
-  // var layout = {
-  //   title: 'Time Series with Rangeslider',
-  //   xaxis: {
-  //     autorange: true,
-  //     range: [new Date(Math.min.apply(null,trace1.x)), new Date(Math.max.apply(null,trace1.x))],
-  //     rangeselector: {buttons: [
-  //         {
-  //           count: 1,
-  //           label: '1m',
-  //           step: 'month',
-  //           stepmode: 'backward'
-  //         },
-  //         {
-  //           count: 6,
-  //           label: '6m',
-  //           step: 'month',
-  //           stepmode: 'backward'
-  //         },
-  //         {step: 'all'}
-  //       ]},
-  //     rangeslider: {range: [new Date(Math.min.apply(null,trace1.x)), new Date(Math.max.apply(null,trace1.x))]},
-  //     type: 'date'
-  //   },
-  //   yaxis: {
-  //     autorange: true,
-  //     //range: [86.8700008333, 138.870004167],
-  //     type: 'linear'
-  //   },
-  //   grid: {
-  //     rows: 2,
-  //     columns: 1,
-  //     pattern: 'independent',
-  //     roworder: 'bottom to top'},
-  // };
 
   Plotly.newPlot('victims', data, layout, { responsive: true });
-  //Plotly.newPlot('offence_type', data1, layout1, { responsive: true });
-  //Plotly.newPlot('incidents_by_year', data2, layout2, { responsive: true });
 }
 
 function createContinentChart(continentData)
@@ -628,10 +534,10 @@ const renderCharts = async () => {
   const continentData = await d3.json(CONTINENT_API);
   const subcontinentData = await d3.json(SUBCONTINENT_API);
   const channelData = await d3.json(CHANNEL_GROUP_API);
-  // const weekdayData = await d3.json(WEEKDAY_API);
-  // const dayData = await d3.json(DAY_API);
-  // const monthData = await d3.json(MONTH_API);
-  // const yearData = await d3.json(YEAR_API);
+  const weekdayData = await d3.json(WEEKDAY_API);
+  const dayData = await d3.json(DAY_API);
+  const monthData = await d3.json(MONTH_API);
+  const yearData = await d3.json(YEAR_API);
 
   createDeviceChart(deviceData);
   createOSChart(OSData);
