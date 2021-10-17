@@ -19,8 +19,14 @@ const createTrafficChart =  async (traffic) =>
     traffic_title = 'Revenue Distribution based on Traffic Source Campaign'
   }
 
-  trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue)
-  .slice(0, 10);
+  if (traffic==="campaign") {
+    trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue)
+    .slice(1, 10);
+  }
+  else{
+    trafficData = trafficData.sort((a, b) => b.total_revenue - a.total_revenue)
+    .slice(0, 10);
+  }
   const trace1 = {
     x: trafficData.map((data) => data.traffic_source),
     y: trafficData.map((data) => data.no_of_users),
@@ -54,7 +60,7 @@ const createTrafficChart =  async (traffic) =>
       columns: 1,
       pattern: 'independent',
       roworder: 'bottom to top'},
-  title: traffic_title
+      title: traffic_title
   };
   
   Plotly.newPlot('traffic', data, layout, { responsive: true });
@@ -72,7 +78,7 @@ function createCountryChart(countryData)
     }];
 
     var layout = {
-      title: 'Total visits',
+      title: 'Total Visits Distribution by Country',
       geo: {
           projection: {
               type: 'robinson'
@@ -90,7 +96,7 @@ function createCountryChart(countryData)
   }];
 
   var layout2 = {
-    title: 'Total Revenue',
+    title: 'Total Revenue Distribution by Country',
     geo: {
         projection: {
             type: 'robinson'
@@ -316,14 +322,15 @@ function createDateChart(dateData) {
   const data = [trace1, trace2];
   
   const layout = {
-  grid: {
+    grid: {
       rows: 2,
       columns: 1,
       pattern: 'independent',
-      roworder: 'bottom to top'}
+      roworder: 'bottom to top'},
+    title: 'Time Series of Visits and Revenue'
   };
 
-  Plotly.newPlot('victims', data, layout, { responsive: true });
+  Plotly.newPlot('timeseries', data, layout, { responsive: true });
 }
 
 function createContinentChart(continentData)
@@ -359,7 +366,7 @@ function createContinentChart(continentData)
     x: continentData.map((data) => data.continent),
     y: continentData.map((data) => data.total_revenue),
     type: 'bar',
-    name: 'Mean Revenue',
+    name: 'Total Revenue',
     xaxis: 'x3',
     yaxis: 'y3',
     // marker: {
@@ -375,8 +382,8 @@ function createContinentChart(continentData)
       rows: 3,
       columns: 1,
       pattern: 'independent',
-      roworder: 'bottom to top'}
-      
+      roworder: 'bottom to top'},
+  title: 'Distribution by Continent'
   };
   Plotly.newPlot('continents', data, layout, { responsive: true });
 }
@@ -384,17 +391,17 @@ function createContinentChart(continentData)
 function createSubcontinentChart(subcontinentData)
 {
   const highVisitsData = subcontinentData
-  .sort((a, b) => a.no_of_users - b.no_of_users);
+  .sort((a, b) => b.no_of_users - a.no_of_users);
   // .slice(0, 10);
 
   const trace1 = {
-    y: highVisitsData.map((data) => data.subcontinent),
-    x: highVisitsData.map((data) => data.no_of_users),
+    x: highVisitsData.map((data) => data.subcontinent),
+    y: highVisitsData.map((data) => data.no_of_users),
     type: 'bar',
     name: 'Total Visits',
-    orientation: 'h',
-    text: highVisitsData.map((data) => data.no_of_users),
-    textposition: 'auto',
+    // orientation: 'h',
+    // text: highVisitsData.map((data) => data.no_of_users),
+    // textposition: 'auto',
     // marker: {
     //   color: 'rgb(49,130,189)',
     //   opacity: 0.7,
@@ -407,7 +414,8 @@ function createSubcontinentChart(subcontinentData)
     type: 'bar',
     name: 'Mean Revenue',
     xaxis: 'x2',
-    yaxis: 'y2'
+    yaxis: 'y2',
+    tickangle: 45,
     // marker: {
     //   color: 'rgb(49,130,189)',
     //   opacity: 0.7,
@@ -418,9 +426,10 @@ function createSubcontinentChart(subcontinentData)
     x: subcontinentData.map((data) => data.subcontinent),
     y: subcontinentData.map((data) => data.total_revenue),
     type: 'bar',
-    name: 'Mean Revenue',
+    name: 'Total Revenue',
     xaxis: 'x3',
     yaxis: 'y3',
+    ticklabel:false
     // marker: {
     //   color: 'rgb(49,130,189)',
     //   opacity: 0.7,
@@ -432,10 +441,13 @@ function createSubcontinentChart(subcontinentData)
   
   const layout = {
   grid: {
-      rows: 1,
-      columns: 3,
+      rows: 3,
+      columns: 1,
       pattern: 'independent',
-      roworder: 'bottom to top'}
+      roworder: 'bottom to top'},
+      xaxis: {
+      tickangle: 45,
+    },
   };
   
   Plotly.newPlot('subcontinents', data, layout, { responsive: true });
@@ -471,7 +483,7 @@ const renderCharts = async () => {
 }
 
 const onTrafficChange = async () => {
-  const traffic = document.querySelector('#year-select').value;
+  const traffic = document.querySelector('#traffic-select').value;
   showLoader();
   await createTrafficChart(traffic);
   hideLoader();
