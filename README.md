@@ -36,7 +36,7 @@ The data model needs to predict the revenue per customer. This is a hihgly imbal
 ## Steps in the EDA and Prediction process
 Data needs to be downloaded from https://drive.google.com/file/d/18q2kat1HtKZm7p30rimWdJ2YnKSAxVIj/view?usp=sharing and added to Data folder to run the notebook.<br>
 Python Pandas, Jupyter Notebook $ MongoDB was used for the ETL process.
-LGBM Regressor model was used to predict the natural logarith of revenue per customer. Natural logarithm of revenue was used for prediction since the dataset was higly imbalanced.
+LGBM Regressor model was used to predict the natural logarithm of revenue per customer. Natural logarithm of revenue was used for prediction since the dataset was higly imbalanced.
 Python Flask was used to create the application. PyMongo package was used to connect from the application to MongoDB.
 HTML, CSS, Javascript, Plotly and Choropleth were used to visualise the analysis and prediction.
 <br>
