@@ -34,7 +34,7 @@ The data model needs to predict the revenue per customer. This is a hihgly imbal
 ![ResidualPlot](Figures/ResidualPlot.png "Residual Plot")
 
 ## Steps in the EDA and Prediction process
-Data needs to be downloaded from https://www.kaggle.com/c/ga-customer-revenue-prediction/data?select=train.csv and added to Data folder.
+Data was downloaded from https://www.kaggle.com/c/ga-customer-revenue-prediction/data?select=train.csv and added to Data folder.
 Data was in the form of csv file and Python Pandas, Jupyter Notebook $ MongoDB was used for the ETL process.
 LGBM Regressor model was used to predict the natural logarith of revenue per customer. Natural logarithm of revenue was used for prediction since the dataset was higly imbalanced.
 Python Flask was used to create the application. PyMongo package was used to connect from the application to MongoDB.
