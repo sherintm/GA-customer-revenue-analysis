@@ -13,8 +13,8 @@ Analysis based on Device used
 
 96% of customers use desktop and 73.5% of total revenue is from desktop devices. 23% of customers use mobile devices, but they contribute only 3.23% of total revenue. Most revenue comes from Macintosh users and Chrome browser.
 ![DeviceCategory](Figures/device_category.png "Total Visits and Revenue based on Device Category")
-![OSCategory](Figures/device_category.png "Total Revenue based on OS Category")
-![BrowserCategory](Figures/device_category.png "Total Revenue based on Browser Category")
+![OSCategory](Figures/os_category.png "Total Revenue based on OS Category")
+![BrowserCategory](Figures/browser_category.png "Total Revenue based on Browser Category")
 Analysis based on Traffic Source parameters and Channel
 
 Most of the revenue comes through the medium referral although the number of visits are high with organic medium. The top revenue is obtained with Google as traffic source. The highest number of visits comes with campaign Data Share Promo but it contributes to very low revenue. AW - Dynamic Search Ads Whole Site is the campaign with highest revenue. total revenue among the campaigns. The dropdown gives the option to select different traffic source parameters and the chart will be updated with the selected parameter.
