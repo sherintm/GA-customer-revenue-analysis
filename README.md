@@ -32,3 +32,9 @@ The time series analysis shows that there is no correlation between number of vi
 The data model needs to predict the revenue per customer. This is a hihgly imbalanced dataset with only 1.4% of users contributing to the revenue. The natual logarithm of revenue is used to normalise the revenue Distribution. LGBM Regressor(Light Gradient Booseted Machine) model is used to predict the revenue per customer. The RMSE score of the model is 1.10423.
 ![NaturalRevenueDistribution](Figures/NaturalRevenueDistribution.png "Natural Revenue Distribution")
 ![ResidualPlot](Figures/ResidualPlot.png "Residual Plot")
+
+## Steps in the EDA and Prediction process
+Data was in the form of csv file and Python Pandas, Jupyter Notebook $ MongoDB was used for the ETL process.
+LGBM Regressor model was used to predict the natural logarith of revenue per customer. Natural logarithm of revenue was used for prediction since the dataset was higly imbalanced.
+Python Flask was used to create the application. PyMongo package was used to connect from the application to MongoDB.
+HTML, CSS, Javascript, Plotly and Choropleth were used to visualise the analysis and prediction.
