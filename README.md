@@ -39,7 +39,3 @@ Python Pandas, Jupyter Notebook $ MongoDB was used for the ETL process.
 LGBM Regressor model was used to predict the natural logarithm of revenue per customer. Natural logarithm of revenue was used for prediction since the dataset was higly imbalanced.
 Python Flask was used to create the application. PyMongo package was used to connect from the application to MongoDB.
 HTML, CSS, Javascript, Plotly and Choropleth were used to visualise the analysis and prediction.
-<br>
-<br>
-
-## Reference: https://www.kaggle.com/c/ga-customer-revenue-prediction
