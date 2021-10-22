@@ -34,17 +34,6 @@ visit_hour_collection = database.get_collection("visit_hour_totals")
 date_collection = database.get_collection("date_totals")
 
 
-# lga_file_path = os.path.join("Data", "VIC_LGA_shp2.json")
-# polygon_file_path = os.path.join("Data", "VIC_LGA_POLYGON_shp.json")
-# updated_lga_path = os.path.join("Data", "Updated_LGA.json")
-
-# with open(lga_file_path) as jsonfile:
-#     lga_json = json.load(jsonfile)
-
-# with open(polygon_file_path) as jsonfile:
-#     polygon_json = json.load(jsonfile)
-
-
 #Route /
 @app.route("/")
 @cross_origin()
