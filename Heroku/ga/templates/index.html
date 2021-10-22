@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Google Analytics Customer Revenue Analysis & Prediction</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  </head>
+
+  <body class="collapsed">
+    <header class="page-header">
+      <nav>
+        <ul class="admin-menu">
+          <li>
+            <div class="switch">
+              <!-- <input type="checkbox" id="mode" checked /> -->
+              <label for="mode">
+              </label>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <h2><center>Google Analytics Customer Revenue Analysis & Prediction</center></h2>
+
+    <section class="page-content">
+      <!-- <h2><center>Google Analytics Customer Revenue Analysis & Prediction</center></h2> -->
+      <section class="grid">
+      <!-- <section> -->
+        <div class="row form-group" >
+            <div class="box ">
+              <p class="h6"><img src="../static/images/CustomerRevenueDist.png" class="img-fluid visualization rounded float-right" width="30%" height="30%" alt="Responsive image" align="right"/>
+                <br>A small percentage of customers produce most of the revenue in many businesses. 
+                It is known as the 80/20 rule in marketing. It simply means that 80% of business 
+                comes from about 20% of customers. Marketing teams are challenged to make appropriate 
+                investments in their promotional strategies. Here, Google Merchandise customer dataset 
+                is analysed to visualize the trends in customer revenue and to predict revenue per customer. 
+                The outcome will be more actionable operational changes and better use of marketing budgets 
+                for those companies who choose to use data analysis on top of Google Analytics data.
+                <br CLEAR="left"/>
+                <br/>
+                The revenue distribution shows that only a small percentage of customers contribute to the revenue and in this case it
+                is only 1.4%.
+              </p>
+              <!-- <button type="button" class="btn btn-light mc-auto"><a href="index.html">Analysis</a></button>
+              <button type="button" class="btn btn-secondary mr-auto"><a href="index.html">Prediction</a></button> -->
+              <!-- <nav class="btn btn-light">
+                <a class="navbar-brand" href="index.html">Analysis</a>
+                <a class="navbar-brand" href="prediction.html">Prediction</a>
+              </nav> -->
+            </div>
+        </div>
+        <div class="row form-group" >
+          <div class="box">
+            <p class = "h3">Analysis based on Country</p>
+            <p class = "h6">Total number of visits and total revenue is the highest for United States, but this does not mean that the total revenue is 
+              proportional to the number of visits. We can see that the total revenue is less for some countries
+              with more visits. For example Canada has more revenue than India although the number of visits are almost double for India.
+            </p>
+          </div>
+        </div>
+        <div class="row form-group" >
+          <div class="col-md-6 ">
+            <div id='map' style='width: 100%; height: 100%;'></div>
+          </div>
+          <div class="col-md-6 ">
+            <div id='map2' style='width: 100%; height: 100%;'></div>
+          </div>
+        </div>
+        <div class="row form-group" >
+          <div class="box">
+            <p class = "h3">Analysis based on Device used</p>
+            <p class = "h6">
+              96% of customers use desktop and 73.5% of total revenue is from desktop devices. 23% of customers use mobile 
+              devices, but they contribute only 3.23% of total revenue.
+              Most revenue comes from Macintosh users and Chrome browser.
+            </p>
+          </div>
+        </div>        
+        <div class="row form-group">
+          <div class="col-md-4 ">
+            <div id="device_users"></div>
+          </div>
+          <div class="col-md-4">
+              <div id="os"></div>
+          </div>
+          <div class="col-md-4">
+              <div id="browser"></div>
+          </div>
+        </div>
+        <div class="row form-group" >
+          <div class="box">
+            <p class = "h3">Analysis based on Traffic source parameters</p>
+            <p class = "h6">
+              Most of the revenue comes through the medium referral although the number of visits are high with organic medium. 
+              The top revenue is obtained with Google as traffic source. The highest number of visits comes with campaign Data Share Promo but
+              it contributes to very low revenue. AW - Dynamic Search Ads Whole Site is the campaign with highest revenue. 
+              total revenue among the campaigns.<br>
+              42% of total visits comes from Organic Search channel, but 42% total revenue comes through Referral channel.
+            </p>
+          </div>
+        </div>        
+        <div class="row form-group">
+          <div class="col-md-2">
+            <div class="h6 card">Select Traffic Source Attribute: 
+              <select id="traffic-select" onchange="onTrafficChange()">
+                <option value="source">Source</option>
+                <option value="medium" selected>Medium</option>
+                <option value="campaign">Campaign</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div id="traffic"></div>
+          </div>
+          <div class="col-md-5">
+            <div id="channel_group"></div>
+          </div>
+        </div>
+        <div class="row form-group" >
+          <div class="box">
+            <p class = "h3">Distribution by Continent and Time Series Analysis</p>
+            <p class = "h6">
+              Highest revenue comes from the continet Americas. 
+              <br>
+              The time series analysis shows that there is no correlation between number of visits and total revenue.
+              Number of visits were increased in November and December of 2016 and also a spike on April 26th of 2017.
+              The highest revenue was recorded on April 5th of 2017.
+            </p>
+          </div>
+        </div> 
+        <div class="row form-group">
+          <div class="col-md-5">
+            <div id="continents"></div>
+          </div>
+          <div class="col-md-7">
+            <div id="timeseries"></div>
+          </div>
+        </div>
+        <div class="row form-group" >
+          <div class="box">
+            <p class = "h3">Data Modelling and Prediction</p>
+            <p class = "h6">
+              The data model needs to predict the revenue per customer. This is a hihgly imbalanced dataset with only 1.4% of users 
+              contributing to the revenue. The natual logarithm of revenue is used to normalise the revenue Distribution. 
+              LGBM Regressor(Light Gradient Booseted Machine) model is used to predict the revenue per customer.
+              The RMSE score of the model is 1.1564.
+            </p>
+          </div>
+        </div> 
+        <div class="row form-group">
+          <div class="col-md-6">
+            <img src="../static/images/NaturalRevenueDistribution.png" class="img-fluid" alt="Responsive image">
+          </div>
+          <div class="col-md-6">
+            <img src="../static/images/ResidualPlot.png" class="img-fluid" alt="Responsive image">
+          </div>
+        </div>
+        <div class="row form-group">
+          <!-- <div class="col-md-6"> -->
+            <img src="../static/images/CompareYtest&Yprediction.png" class="img-fluid" alt="Responsive image">
+          <!-- </div> -->
+        </div>
+
+      </section>
+      <footer class="page-footer">
+        <span
+          >made by
+          <em>Sherin Thomas</em>
+        </span>
+      </footer>
+    </section>
+
+    <div class="loading style-2">
+      <div class="loading-wheel"></div>
+    </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="../static/js/util.js"></script>
+    <script type="text/javascript" src="../static/js/config.js"></script>
+    <script type="text/javascript" src="../static/js/main.js"></script>
+  </body>
+</html>
