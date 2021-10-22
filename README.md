@@ -1,10 +1,9 @@
 # Google Analytics Customer Revenue Analysis & Prediction
 A small percentage of customers produce most of the revenue in many businesses. It is known as the 80/20 rule in marketing. It simply means that 80% of business comes from about 20% of customers. Marketing teams are challenged to make appropriate investments in their promotional strategies. Here, Google Merchandise customer dataset is analysed to visualize the trends in customer revenue and to predict revenue per customer. The outcome will be more actionable operational changes and better use of marketing budgets for those companies who choose to use data analysis on top of Google Analytics data.<br>
+<strong>The dashboard with analysis and prediction details is deployed at https://gacustomerrevenue.herokuapp.com/</strong>
 
 The revenue distribution shows that only a small percentage of customers contribute to the revenue and in this case it is only 1.4%.
 ![RevenueDistribution](Figures/CustomerRevenueDist.png "RevenueDistribution")
-
-<strong>The dashboard with analysis and prediction details is deployed at https://gacustomerrevenue.herokuapp.com/</strong>
 
 ## Analysis based on Country
 
