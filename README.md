@@ -3,6 +3,9 @@ A small percentage of customers produce most of the revenue in many businesses. 
 
 The revenue distribution shows that only a small percentage of customers contribute to the revenue and in this case it is only 1.4%.
 ![RevenueDistribution](Figures/CustomerRevenueDist.png "RevenueDistribution")
+
+<strong>The dashboard with analysis and prediction details is deployed at https://gacustomerrevenue.herokuapp.com/</strong>
+
 ## Analysis based on Country
 
 Total number of visits and total revenue is the highest for United States, but this does not mean that the total revenue is proportional to the number of visits. We can see that the total revenue is less for some countries with more visits. For example Canada has more revenue than India although the number of visits are almost double for India.
