@@ -11,9 +11,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Use PyMongo to establish Mongo connection
-conn_str = "mongodb+srv://admin:Data2021@gacustomerrevenueanalys.rog0x.mongodb.net/GA_Customer_DB?retryWrites=true&w=majority"
-#client = pymongo.MongoClient("mongodb://localhost:27017")
-#conn_str =  os.environ.get('MONGODB_URI', '') or "mongodb://localhost:27017"
+conn_str =  os.environ.get('MONGODB_URI', '') or "mongodb://localhost:27017"
 client = pymongo.MongoClient(conn_str)
 database = client['GA_Customer_DB']
 
